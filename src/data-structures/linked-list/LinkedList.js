@@ -116,5 +116,74 @@ export default class LinkedList {
     deleteTail() { 
         const deletedTail = this.tail;
         
+        if (this.head === this.tail) { 
+            this.head = null;
+            this.tail = null;
+            return this.deleteTail;
+        }
+
+        let currentNode = this.head;
+        if (currentNode.next) { 
+            if (!currentNode.next.next) {
+                currentNode.next = null;
+            } else { 
+                currentNode = currentNode.next;
+            }
+        }
+        this.tail = currentNode;
+        return deletedTail;
     }
+
+    deleteHead() { 
+        if (!this.head) { 
+            return null;
+        }
+
+        const deletedHead = this.head;
+        if (this.head.next) {
+            this.head = this.head.next;
+        } else { 
+            this.head = null;
+            this.tail = null;
+        }
+
+        return deletedHead;
+    }
+
+    fromArray(values) { 
+        values.forEach(value => this.append(value));
+        return this;
+    }
+
+    toArray() { 
+        const nodes = [];
+        let currentNode = this.head;
+        while (currentNode.next) { 
+            nodes.push(currentNode.value);
+            currentNode = currentNode.next;
+        }
+
+        return nodes;
+    }
+
+    toString(callback) { 
+        return this.toArray().map((node) => node.toString(callback)).toString();
+    }
+
+    reverse() { 
+        let currentNode = this.head;
+        let prevNode = null;
+        let nextNode = null;
+        while (currentNode) { 
+            nextNode = currentNode.next;
+            currentNode.next = prevNode;
+            prevNode = currentNode;
+            currentNode = nextNode;
+        }
+        this.tail = this.head;
+        this.head = prevNode;
+
+        return this;
+    }
+
 }
